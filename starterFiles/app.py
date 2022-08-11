@@ -10,8 +10,8 @@ root = tk.Tk()  # create the window object
 canvas = tk.Canvas(root, width=600, height=300)
 
 # initialize canvas object with three columns
-# the columns let us place elements precisely
-canvas.grid(columnspan=3)
+# the columns and rows let us place elements precisely
+canvas.grid(columnspan=3, rowspan=3)
 
 #! LOGO
 # first create a pillow image
@@ -30,17 +30,29 @@ logo_label.grid(column=1, row=0)
 
 #! INSTRUCTIONS
 instructions = tk.Label(
-    root, text="Select a PDF file to extract all its text", font=("JMH Pulp Paperback", 14))
+    root, text="Select a PDF file to extract all its text",
+    font=("JMH Pulp Paperback", 14))
 # spans 3 columns, underneath logo
 instructions.grid(columnspan=3, column=0, row=1)
 
+
+def open_file():
+    print("Is this working?")
+
+
 #! BROWSE BUTTON
 browse_text = tk.StringVar()
-browse_btn = tk.Button(root, textvariable=browse_text,
-                       font=("JMH Pulp Paperback", 14))
+browse_btn = tk.Button(root, textvariable=browse_text, command=lambda: open_file(),
+                       font=("JMH Pulp Paperback", 14), bg="#20bebe", fg="white", height=2, width=15)
+# font, bg color, fg color, height, width are optional parameters
+# command is also optional, but without it pushing the button won't do anything
 browse_text.set("Browse")  # initial text
 browse_btn.grid(column=1, row=2)  # create the button
 
+# copied the canvas and grid from above, changed height, removed rowspan to add padding at bottom
+# this effectively adds another empty canvas underneath the button
+canvas = tk.Canvas(root, width=600, height=250)
+canvas.grid(columnspan=3)
 
 #! INITIALIZE THE WINDOW OBJECT AND DISPLAY IT
 root.mainloop()
