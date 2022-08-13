@@ -1,6 +1,37 @@
 import tkinter as tk
 import PyPDF2
 from PIL import Image, ImageTk
+from tkinter.filedialog import askopenfile
+
+
+def open_file():
+    # print("You clicked the button")
+    browse_text.set("loading...")
+    file = askopenfile(parent=root, mode="rb", title="Choose a file", filetypes=[
+                       ("Pdf file", "*.pdf")])
+    if file:  # if file = true, we picked a file
+        # print("File was successfully loaded")
+        read_pdf = PyPDF2.PdfFileReader(file)
+        page = read_pdf.getPage(0)  # read first page
+        page_content = page.extract_text()
+        # print(page_content)
+
+        # text box
+        text_box = tk.Text(root, height=10, width=50, padx=15,
+                           pady=15)  # initialize text box
+
+        # create the box
+        text_box.insert(1.0, page_content)
+
+        # justify the text in the text box
+        # text_box.tag_configure("center", justify="center")
+        # text_box.tag_add("center", 1.0, "end")
+
+        # place the text box on the grid below the button
+        text_box.grid(column=1, row=3)
+
+        browse_text.set("Browse")
+
 
 #! CREATE AND SET UP WINDOW OBJECT
 # code before window object created won't be in window
@@ -35,17 +66,13 @@ instructions = tk.Label(
 # spans 3 columns, underneath logo
 instructions.grid(columnspan=3, column=0, row=1)
 
-
-def open_file():
-    print("Is this working?")
-
-
 #! BROWSE BUTTON
 browse_text = tk.StringVar()
 browse_btn = tk.Button(root, textvariable=browse_text, command=lambda: open_file(),
                        font=("JMH Pulp Paperback", 14), bg="#20bebe", fg="white", height=2, width=15)
 # font, bg color, fg color, height, width are optional parameters
 # command is also optional, but without it pushing the button won't do anything
+
 browse_text.set("Browse")  # initial text
 browse_btn.grid(column=1, row=2)  # create the button
 
